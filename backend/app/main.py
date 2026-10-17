@@ -8,6 +8,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import routes_ask, routes_ask_v2, routes_auth, routes_health, routes_kpis
+from app.api.rate_limit import RateLimiter, rate_limit_middleware
 from app.db.models import Base  # noqa: F401 — register models
 from app.db.session import engine
 from app.settings import get_settings
@@ -29,6 +30,15 @@ app = FastAPI(
     version="0.1.0",
     description="AI-powered logistics analytics dashboard backend.",
     lifespan=lifespan,
+)
+
+app.middleware("http")(
+    rate_limit_middleware(
+        RateLimiter(
+            login_limit=settings.rate_limit_login_per_minute,
+            ask_limit=settings.rate_limit_ask_per_minute,
+        )
+    )
 )
 
 app.add_middleware(

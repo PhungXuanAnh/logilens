@@ -21,8 +21,6 @@ services:
     image: logilens-backend:latest
     restart: unless-stopped
     expose: ["8000"]
-    ports:
-      - "8000:8000"
     environment:
       DATABASE_URL: "sqlite:////data/dev.db"
       JWT_SECRET: "${JWT_SECRET}"
@@ -34,6 +32,8 @@ services:
       FALLBACK_PROVIDER: "${FALLBACK_PROVIDER:-keyword}"
       FALLBACK_MODEL: "${FALLBACK_MODEL:-}"
       FALLBACK_API_KEY: "${FALLBACK_API_KEY:-}"
+      RATE_LIMIT_LOGIN_PER_MINUTE: "${RATE_LIMIT_LOGIN_PER_MINUTE:-10}"
+      RATE_LIMIT_ASK_PER_MINUTE: "${RATE_LIMIT_ASK_PER_MINUTE:-20}"
       CORS_ORIGINS: "https://${DOMAIN}"
     volumes:
       - /var/logilens/data:/data
@@ -49,8 +49,6 @@ services:
     image: logilens-frontend:latest
     restart: unless-stopped
     expose: ["3000"]
-    ports:
-      - "3000:3000"
     environment:
       NEXT_PUBLIC_API_URL: "https://${DOMAIN}"
       NODE_ENV: production

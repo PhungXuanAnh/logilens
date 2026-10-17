@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from functools import lru_cache
 
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -38,6 +39,9 @@ class Settings(BaseSettings):
     fallback2_base_url: str = ""
 
     cors_origins: str = "http://localhost:3000"
+
+    rate_limit_login_per_minute: int = Field(default=10, ge=1)
+    rate_limit_ask_per_minute: int = Field(default=20, ge=1)
 
     @property
     def cors_origin_list(self) -> list[str]:

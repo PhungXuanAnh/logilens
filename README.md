@@ -98,6 +98,10 @@ Everything is env vars; defaults are demo-friendly. The full list is in [`.env.t
 | `LLM_MODEL` / `LLM_API_KEY` / `LLM_BASE_URL` | empty | Required for non-keyword providers. |
 | `FALLBACK_PROVIDER` | `keyword` | Next tier in the cascade; the live demo runs `gemini → keyword`. |
 | `CORS_ORIGINS` | `http://localhost:3000` | Comma-separated origin list. |
+| `RATE_LIMIT_LOGIN_PER_MINUTE` | `10` | Maximum login attempts per client IP in a 60-second window. |
+| `RATE_LIMIT_ASK_PER_MINUTE` | `20` | Combined requests to `/api/ask` and `/api/v2/ask` per client IP in a 60-second window. |
+
+Rate-limited requests receive HTTP `429` and a `Retry-After` header. Health checks and CORS preflight requests are not limited. Limits are held in each backend process; the provided deployment runs one Uvicorn worker. A multi-worker or multi-server deployment requires a shared limiter store (such as Redis) before scaling out. The deployment's Caddy proxy sets the client IP and backend ports are not published directly.
 
 The live demo runs `LLM_PROVIDER=gemini` (gemini-2.5-flash, no proxy) with `FALLBACK_PROVIDER=keyword`.
 
