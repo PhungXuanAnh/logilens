@@ -1,6 +1,8 @@
 Logilens Logistics AI
 ---
 
+[Domain recovery and hostname migration](docs/domain-recovery.md) · Owner inventory: `~/Dropbox/Work/infrastructure/domains/README.md`
+
 A small AI-powered logistics analytics dashboard.
 
 - Live demo: http://logilens.xuananh1.site:8899 — plain HTTP on port **8899** (open the full URL including the port; there is no HTTPS or bare-domain redirect)
